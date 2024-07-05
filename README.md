@@ -1,7 +1,7 @@
 This repository contains source code for demonstrating 2 approaches to load balance messages from a single topic to multiple consumers in MQTT.
 
-# Load Balancing Messages in MQTT
-## Approach 1: Multiple Partitions using Topic Hierarchy
+# MQTT Client Load Balancing Approaches
+## Approach 1: Multiple Partitions using Topic Hierarchy (Custom Implementation for MQTT v3.1.1)
 branch: **multiple-partitions-topic-hierarchy**
 
 This approach leverages the topic hierarchy to create multiple partitions for shared subscriptions. By organizing the topic hierarchy, multiple partitions are established, and each consumer can subscribe to a specific partition independently.
