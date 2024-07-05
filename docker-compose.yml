@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto
+    container_name: mqtt
+    ports:
+      - "1883:1883" #default mqtt port
+      - "9001:9001" #default mqtt port for websockets
+    volumes:
+      - ./config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+  publisher:
+    build:
+      context: ./publisher
+    environment:
+      - NUMBER_OF_PATITION=3
+    volumes:
+      - ./publisher:/app
+      - /app/node_modules
+    depends_on:
+      - mqtt-broker
+  subscriber:
+    build:
+      context: ./subscriber
+    environment:
+      - PARTITION_NUMBER=1
+    volumes:
+      - ./subscriber:/app
+      - /app/node_modules
+    depends_on:
+      - mqtt-broker
+  subscriber2:
+    build:
+      context: ./subscriber
+    environment:
+      - PARTITION_NUMBER=2
+    volumes:
+      - ./subscriber:/app
+      - /app/node_modules
+    depends_on:
+      - mqtt-broker
+  subscriber3:
+    build:
+      context: ./subscriber
+    environment:
+      - PARTITION_NUMBER=3
+    volumes:
+      - ./subscriber:/app
+      - /app/node_modules
+    depends_on:
+      - mqtt-broker
