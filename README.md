@@ -1,4 +1,4 @@
-This repository contains source code for demonstrating 2 approaches to load balance messages from a single topic to multiple consumers in MQTT.
+This repository contains the source code for demonstrating two approaches to load balancing messages from a single topic to multiple consumers.
 
 # MQTT Client Load Balancing Approaches
 ## Approach 1: Multiple Partitions using Topic Hierarchy (Custom Implementation for MQTT v3.1.1)
