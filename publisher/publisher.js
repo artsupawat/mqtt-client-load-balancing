@@ -1,5 +1,5 @@
-const { connect } = require("mqtt");
-const { v4: uuidv4 } = require("uuid");
+import { connect } from "mqtt";
+import { v4 as uuidv4 } from "uuid";
 
 // MQTT broker URL
 const brokerUrl = "mqtt://mqtt-broker"; // Replace with your broker's URL

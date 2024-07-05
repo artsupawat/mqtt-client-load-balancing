@@ -1,4 +1,4 @@
-const { connect } = require("mqtt");
+import { connect } from "mqtt";
 
 // MQTT broker URL
 const brokerUrl = "mqtt://mqtt-broker"; // Replace with your broker's URL
