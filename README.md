@@ -25,7 +25,7 @@ $share/<group>/topic
 The first part is the shared subscription identifier, which is `$share`. The second part is the group identifier, which is the name of the group. The third part is the actual topic that the shared subscription is subscribing to.
 
 For example:
-![shared-subscriptions](mqtt-shared-subscription.png)
+![shared-subscriptions](mqtt-shared-subscription-v2.png)
 
 - Publisher publishes messages to the topic 'demoTopic'.
 - Consumer1 subscribes to the shared subscription '$share/group1/demoTopic'.
