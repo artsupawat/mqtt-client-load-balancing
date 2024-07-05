@@ -1,5 +1,5 @@
-import { connect } from "mqtt";
-import { v4 } from "uuid";
+const { connect } = require("mqtt");
+const { v4: uuidv4 } = require("uuid");
 
 // MQTT broker URL
 const brokerUrl = "mqtt://mqtt-broker"; // Replace with your broker's URL
@@ -13,16 +13,13 @@ const client = connect(brokerUrl, {
 // Handle connection event
 client.on("connect", () => {
   console.log("Publisher connected to MQTT broker");
-  const numberOfPartition = Number(process.env.NUMBER_OF_PATITION);
 
   setInterval(() => {
     const message = {
-      messageId: v4(), // Generate a UUID
+      messageId: uuidv4(), // Generate a UUID
       timestamp: Date.now(), // Add a timestamp
       payload: "Hello, MQTT!",
-      topic: `demoTopic/partition${
-        Math.floor(Math.random() * numberOfPartition) + 1
-      }`, // random partition
+      topic: 'demoTopic'
     };
 
     client.publish(

@@ -1,4 +1,4 @@
-import { connect } from "mqtt";
+const { connect } = require("mqtt");
 
 // MQTT broker URL
 const brokerUrl = "mqtt://mqtt-broker"; // Replace with your broker's URL
@@ -11,13 +11,17 @@ const mqttClient = connect(brokerUrl, {
 
 mqttClient.on("connect", () => {
   console.log("Subscriber connected to MQTT broker");
-  console.log(
-    `Subscribing to topic demoTopic/partition${process.env.PARTITION_NUMBER}`
-  );
-
   // Subscribe to a topic
-  const topic = `demoTopic/partition${process.env.PARTITION_NUMBER}`;
-  mqttClient.subscribe(topic, { qos: 1 });
+  const topic = 'demoTopic'
+
+  // If the MQTT_GROUP_ID environment variable is set, use shared subscriptions
+  if (process.env.MQTT_GROUP_ID) {
+    console.log(`Using shared subscription with group ID ${process.env.MQTT_GROUP_ID} for topic ${topic}`);
+    mqttClient.subscribe(`$share/${process.env.MQTT_GROUP_ID}/${topic}`, { qos: 1 });
+  } else {
+    console.log(`Using regular subscription for topic ${topic}`);
+    mqttClient.subscribe(topic, { qos: 1 });
+  }
 });
 
 // Handle incoming messages

@@ -14,38 +14,28 @@ services:
   publisher:
     build:
       context: ./publisher
-    environment:
-      - NUMBER_OF_PATITION=3
     volumes:
       - ./publisher:/app
       - /app/node_modules
     depends_on:
       - mqtt-broker
-  subscriber:
+  shared-subscriber:
     build:
       context: ./subscriber
+    deploy:
+      replicas: 3
     environment:
-      - PARTITION_NUMBER=1
+      - MQTT_GROUP_ID=shared-subscriber-group
     volumes:
       - ./subscriber:/app
       - /app/node_modules
     depends_on:
       - mqtt-broker
-  subscriber2:
+  anonymous-subscriber: # this subscriber will not be part of the group
     build:
       context: ./subscriber
-    environment:
-      - PARTITION_NUMBER=2
-    volumes:
-      - ./subscriber:/app
-      - /app/node_modules
-    depends_on:
-      - mqtt-broker
-  subscriber3:
-    build:
-      context: ./subscriber
-    environment:
-      - PARTITION_NUMBER=3
+    deploy:
+      replicas: 2
     volumes:
       - ./subscriber:/app
       - /app/node_modules
