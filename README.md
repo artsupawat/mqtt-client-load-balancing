@@ -1,15 +1,19 @@
-This repository contains source code for demonstrating the use of MQTT v5 shared supscriptons feature. You can select the branch for each approach that you want to see in action.
+This repository contains source code for demonstrating 2 approaches to load balance messages from a single topic to multiple consumers in MQTT.
 
-## Approach 1: Shared Subscriptions with Multiple Partitions
+## Approach 1: Multiple Partitions using Topic Hierarchy
 branch: **multiple-partitions-topic-hierarchy**
 
-This approach uses the topic hierarchy to create multiple partitions for shared subscriptions. The topic hierarchy is used to create multiple partitions for shared subscriptions to each consumer. The consumers can subscribe to the shared subscription by using the topic filter that matches the topic hierarchy.
+This approach leverages the topic hierarchy to create multiple partitions for shared subscriptions. By organizing the topic hierarchy, multiple partitions are established, and each consumer can subscribe to a specific partition independently.
 
 For example:
-- Publisher publishes messages to the topic 'demoTopic/partition1', 'demoTopic/partition2', or 'demoTopic/partition3' randomly.
-- Consumer1 subscribes to the shared subscription 'demoTopic/partition1'.
-- Consumer2 subscribes to the shared subscription 'demoTopic/partition2'.
-- Consumer3 subscribes to the shared subscription 'demoTopic/partition3'.
+- The publisher randomly publishes messages to 'demoTopic/partition1', 'demoTopic/partition2', or 'demoTopic/partition3' (using a uniform distribution).
+- Consumer1 subscribes to 'demoTopic/partition1'.
+- Consumer2 subscribes to 'demoTopic/partition2'.
+- Consumer3 subscribes to 'demoTopic/partition3'.
+
+This method resembles the partitioning of topics in Kafka. However, it is not a standard way of partitioning topics in MQTT and requires custom implementation by both publishers and consumers. Consequently, you must manually set up the topic hierarchy for each partition on all devices that publish messages to the topic. Additionally, you need to deploy multiple consumers to subscribe to each partition, with the number of consumers matching the number of partitions.
+
+For this, if we need to scale out consumers, we need to reassign the partitions to each device that publishes messages to the topic, and then deploy new consumers to subscribe to the new partitions.
 
 ## Approach 2: Shared Subscriptions with new Feature in MQTT (MQTT v5)
 branch: **shared-subscriptions-mqtt-v5**
@@ -28,9 +32,13 @@ For example:
 ![shared-subscriptions](mqtt-shared-subscription-v2.png)
 
 - Publisher publishes messages to the topic 'demoTopic'.
-- Consumer1 subscribes to the shared subscription '$share/group1/demoTopic'.
-- Consumer2 subscribes to the shared subscription '$share/group1/demoTopic'.
-- Consumer3 subscribes to the shared subscription '$share/group1/demoTopic'.
+- Consumer1 subscribes to the shared subscription '$share/shared-subscriber-group/demoTopic'.
+- Consumer2 subscribes to the shared subscription '$share/shared-subscriber-group/demoTopic'.
+- Consumer3 subscribes to the shared subscription '$share/shared-subscriber-group/demoTopic'.
+
+For this approach, you don't need to manually set up the topic hierarchy for each partition on all devices that publish messages to the topic. You can use the shared subscription feature in MQTT v5 to distribute messages across multiple consumers. However, you need to ensure that all consumers are using MQTT v5 to support shared subscriptions.
+
+Additionally, if you have to scale out consumers, you can assign them to the same group, and the MQTT broker will automatically distribute messages to all consumers in the group. You don't need to manually manage the number of partitions and consumers, avoiding the needs to update the topic on all devices that publish messages to the topic.
 
 ### References:
 - [StackOverflow thread: Is it possible to distribute reads of an MQTT topic over multiple consumers?](https://stackoverflow.com/questions/27850819/is-it-possible-to-distribute-reads-of-an-mqtt-topic-over-multiple-consumers)
