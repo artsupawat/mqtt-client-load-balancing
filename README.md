@@ -1,5 +1,6 @@
 This repository contains source code for demonstrating 2 approaches to load balance messages from a single topic to multiple consumers in MQTT.
 
+# Load Balancing Messages in MQTT
 ## Approach 1: Multiple Partitions using Topic Hierarchy
 branch: **multiple-partitions-topic-hierarchy**
 
@@ -39,6 +40,28 @@ For example:
 For this approach, you don't need to manually set up the topic hierarchy for each partition on all devices that publish messages to the topic. You can use the shared subscription feature in MQTT v5 to distribute messages across multiple consumers. However, you need to ensure that all consumers are using MQTT v5 to support shared subscriptions.
 
 Additionally, if you have to scale out consumers, you can assign them to the same group, and the MQTT broker will automatically distribute messages to all consumers in the group. You don't need to manually manage the number of partitions and consumers, avoiding the needs to update the topic on all devices that publish messages to the topic.
+
+# Running the Demo
+## Prerequisites
+- Docker
+
+## Steps
+1. Clone the repository:
+```bash
+git clone [repository-url]
+```
+
+2. Switch to the branch for the desired approach:
+```bash
+git checkout [branch-name]
+```
+
+3. Run the demo:
+```bash
+docker-compose up
+```
+
+4. Analyze the logs to see how messages are distributed to each consumer.
 
 ### References:
 - [StackOverflow thread: Is it possible to distribute reads of an MQTT topic over multiple consumers?](https://stackoverflow.com/questions/27850819/is-it-possible-to-distribute-reads-of-an-mqtt-topic-over-multiple-consumers)
