@@ -7,6 +7,7 @@ branch: **multiple-partitions-topic-hierarchy**
 This approach leverages the topic hierarchy to create multiple partitions for shared subscriptions. By organizing the topic hierarchy, multiple partitions are established, and each consumer can subscribe to a specific partition independently.
 
 For example:
+![partitioning-via-topic-hierarchy](partitioning-via-topic-hierarchy.png)
 - The publisher randomly publishes messages to 'demoTopic/partition1', 'demoTopic/partition2', or 'demoTopic/partition3' (using a uniform distribution).
 - Consumer1 subscribes to 'demoTopic/partition1'.
 - Consumer2 subscribes to 'demoTopic/partition2'.
